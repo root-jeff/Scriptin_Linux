@@ -117,6 +117,51 @@ menu_interactivo() {
 	done
 }
 
+jhon_pincay(){
+	# Paso 1: Crear archivos base con entrada del usuario
+	echo "Ingrese los empleados (ID y nombre) separados por espacio. Ejemplo: '1 Juan'"
+	echo "Ingrese el ID y nombre del primer empleado:"
+	read id1 nombre1
+	echo "Ingrese el ID y nombre del segundo empleado:"
+	read id2 nombre2
+	echo "Ingrese el ID y nombre del tercer empleado:"
+	read id3 nombre3
+	echo -e "$id1 $nombre1\n$id2 $nombre2\n$id3 $nombre3" > empleados.txt
+	echo "Ingrese los departamentos (ID y nombre) separados por espacio. Ejemplo: '1 Ventas'"
+	echo "Ingrese el ID y nombre del primer departamento:"
+	read dept1 nombre_dept1
+	echo "Ingrese el ID y nombre del segundo departamento:"
+	read dept2 nombre_dept2
+	echo "Ingrese el ID y nombre del tercer departamento:"
+	read dept3 nombre_dept3
+	echo -e "$dept1 $nombre_dept1\n$dept2 $nombre_dept2\n$dept3 $nombre_dept3" > departamentos.txt
+	echo "Ingrese los sueldos (ID y sueldo) separados por espacio. Ejemplo: '1 3000'"
+	echo "Ingrese el ID y sueldo del primer empleado:"
+	read id_sueldo1 sueldo1
+	echo "Ingrese el ID y sueldo del segundo empleado:"
+	read id_sueldo2 sueldo2
+	echo "Ingrese el ID y sueldo del tercer empleado:"
+	read id_sueldo3 sueldo3
+	echo -e "$id_sueldo1 $sueldo1\n$id_sueldo2 $sueldo2\n$id_sueldo3 $sueldo3" > sueldos.txt
+	# Paso 2: Ordenar archivos por ID
+	sort empleados.txt > empleados_ordenados.txt
+	sort departamentos.txt > departamentos_ordenados.txt
+	sort sueldos.txt > sueldos_ordenados.txt
+	# Paso 3: Unir empleados con departamentos
+	join empleados_ordenados.txt departamentos_ordenados.txt > emp_dept.txt
+	# Paso 4: Unir resultado anterior con sueldos
+	join emp_dept.txt sueldos_ordenados.txt > reporte_completo.txt
+	# Paso 5: Reemplazar nombre y actualizar sueldo
+	echo "¿Quieres reemplazar algún nombre? (ejemplo: Juan a Jonathan)"
+	read nombre_antiguo nombre_nuevo
+	echo "¿Quieres actualizar algún sueldo? (ejemplo: 3000 a 3300)"
+	read sueldo_antiguo sueldo_nuevo
+	sed -e "s/$nombre_antiguo/$nombre_nuevo/" -e "s/$sueldo_antiguo/$sueldo_nuevo/" reporte_completo.txt > reporte_final.txt
+	# Mostrar resultado final
+	echo -e "\nResultado Final:"
+	cat reporte_final.txt
+}
+
 opcion=1
 while [ "$opcion" != "0" ]; do
 	clear
@@ -136,9 +181,11 @@ while [ "$opcion" != "0" ]; do
 		echo "Opcion 1 - Busqueda de texto Tryshel Leiva"  
 		menu_interactivo
 		;;
-    2) echo "Opcion 2" ;;
-    3) echo "Opcion 3" ;;
-    4) echo "Opcion 4" ;;
+    2) echo "Opcion 2" - Comando de busqueda de archivos FIND;;
+    3) echo "Opcion 3" - Redireccionar salidas ;;
+    4) echo "Opcion 4" - Uso de joins para realizar reportes, el comando sed para remplazar texto. 
+		jhon_pincay
+		;;
     5)
 		echo -e "\n📌 Ejemplos de uso de expresiones regulares en Linux:\n"
 
