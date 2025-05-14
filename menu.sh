@@ -117,7 +117,7 @@ menu_interactivo() {
 	done
 }
 
-jhon_pincay(){
+jhon_pincay() {
 	# Paso 1: Crear archivos base con entrada del usuario
 	echo "Ingrese los empleados (ID y nombre) separados por espacio. Ejemplo: '1 Juan'"
 	echo "Ingrese el ID y nombre del primer empleado:"
@@ -162,6 +162,109 @@ jhon_pincay(){
 	cat reporte_final.txt
 }
 
+
+opt_jefferson() {
+	echo -e "\nOpcion 6 - Comando: Built-in Function - Estudiante: Jefferson Palma"
+	echo -e "\nDescripción:"
+	echo "Las funciones built-in son comandos integrados en Bash que permiten automatizar tareas sin llamar procesos externos."
+	read -p $'\nPresiona Enter para continuar con la demostración paso a paso...'
+
+	echo -e "\n📌 Paso 1: Definir una función saludo personalizada"
+	read -p "Ingrese su nombre: " nombre
+	saludo() {
+		echo "Hola $1, bienvenido al mundo Bash!"
+	}
+	saludo "$nombre"
+
+	read -p $'\nPresiona Enter para declarar una variable de tipo entero...'
+	read -p "¿Cuál es tu edad? " edad_usuario
+	declare -i edad=$edad_usuario
+	echo "Has declarado la edad como entero. Edad = $edad"
+
+	read -p $'\nPresiona Enter para declarar una constante...'
+	declare -r VERSION="v1.0"
+	echo "Se ha declarado una constante: VERSION = $VERSION"
+
+	read -p $'\n¿Quieres ver el tipo de la función saludo con el comando type? [s/n]: ' confirm_type
+	if [[ "$confirm_type" =~ ^[sS]$ ]]; then
+		type saludo
+	fi
+	read -p $'\n¿Te gustaria ver tambien el de la funcion de busqueda de texto (Opcion 1)? [s/n]: ' confirm_type
+	if [[ "$confirm_type" =~ ^[sS]$ ]]; then
+		type menu_interactivo
+	fi
+
+	read -p $'\nPresiona Enter para mostrar la información del sistema con uname...'
+	uname -a
+
+	read -p $'\n¿Deseas ejecutar un comando con eval (ls -l)? [s/n]: ' confirm_eval
+	if [[ "$confirm_eval" =~ ^[sS]$ ]]; then
+		comando="ls -l"
+		eval $comando
+	else
+		echo "⏭️ Saltando eval..."
+	fi
+
+	read -p $'\nAhora vamos a ordenar frutas. Presiona Enter para continuar...'
+	echo -e "manzana\npera\nbanana" > frutas.txt
+	sort frutas.txt
+
+	read -p $'\n¿Quieres contar las líneas del archivo frutas.txt? [s/n]: ' confirm_wc
+	if [[ "$confirm_wc" =~ ^[sS]$ ]]; then
+		wc -l frutas.txt
+	else
+		echo "⏭️ Saltando wc..."
+	fi
+
+	echo -e "\n7. Comentamos el uso de exec para evitar reemplazar el proceso del menu:"
+	echo "# exec ls -l"
+	echo "⚠️ El comando 'exec' reemplaza el script actual por otro proceso."
+	echo "   Si ejecutáramos: exec ls -l"
+	echo "   Entonces el menú dejaría de funcionar y solo verías el resultado de ls -l."
+
+	read -p $'\n¿Quieres eliminar el archivo frutas.txt ahora? [s/n]: ' confirm_rm
+	if [[ "$confirm_rm" =~ ^[sS]$ ]]; then
+		rm frutas.txt
+		echo "🧹 Archivo eliminado."
+	else
+		echo "📁 Archivo conservado como frutas.txt"
+	fi
+}
+
+opt_mike() {
+	echo -e "\n📌 Ejemplos de uso de expresiones regulares en Linux:\n"
+
+	echo "1. Buscar líneas que comienzan con 'Error' en un archivo:"
+	echo "   grep '^Error' archivo.log"
+	echo ""
+
+	echo "2. Buscar líneas que terminan con '.conf' en un archivo:"
+	echo "   grep '\.conf$' archivo.txt"
+	echo ""
+
+	echo "3. Reemplazar números de teléfono por 'XXX-XXX-XXXX' en un archivo:"
+	echo "   sed -E 's/[0-9]{3}-[0-9]{3}-[0-9]{4}/XXX-XXX-XXXX/g' archivo.txt"
+	echo ""
+
+	echo "4. Validar si una cadena es un número entero:"
+	read -p '   Ingrese un número: ' numero
+	if [[ $numero =~ ^[0-9]+$ ]]; then
+		echo '   ✅ Es un número entero válido.'
+	else
+		echo '   ❌ No es un número entero válido.'
+	fi
+	echo ""
+
+	echo "5. Validar formato de correo electrónico:"
+	read -p '   Ingrese un correo electrónico: ' email
+	if [[ $email =~ ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$ ]]; then
+		echo '   ✅ Correo electrónico válido.'
+	else
+		echo '   ❌ Correo electrónico inválido.'
+	fi
+	echo ""
+}
+
 opcion=1
 while [ "$opcion" != "0" ]; do
 	clear
@@ -177,8 +280,7 @@ while [ "$opcion" != "0" ]; do
 	read opcion
 
 	case $opcion in
-    1) 
-		echo "Opcion 1 - Busqueda de texto Tryshel Leiva"  
+    1) echo "Opcion 1 - Busqueda de texto Tryshel Leiva"  
 		menu_interactivo
 		;;
     2) echo "Opcion 2" - Comando de busqueda de archivos FIND;;
@@ -186,106 +288,9 @@ while [ "$opcion" != "0" ]; do
     4) echo "Opcion 4" - Uso de joins para realizar reportes, el comando sed para remplazar texto. 
 		jhon_pincay
 		;;
-    5)
-		echo -e "\n📌 Ejemplos de uso de expresiones regulares en Linux:\n"
-
-		echo "1. Buscar líneas que comienzan con 'Error' en un archivo:"
-		echo "   grep '^Error' archivo.log"
-		echo ""
-
-		echo "2. Buscar líneas que terminan con '.conf' en un archivo:"
-		echo "   grep '\.conf$' archivo.txt"
-		echo ""
-
-		echo "3. Reemplazar números de teléfono por 'XXX-XXX-XXXX' en un archivo:"
-		echo "   sed -E 's/[0-9]{3}-[0-9]{3}-[0-9]{4}/XXX-XXX-XXXX/g' archivo.txt"
-		echo ""
-
-		echo "4. Validar si una cadena es un número entero:"
-		read -p '   Ingrese un número: ' numero
-		if [[ $numero =~ ^[0-9]+$ ]]; then
-			echo '   ✅ Es un número entero válido.'
-		else
-			echo '   ❌ No es un número entero válido.'
-		fi
-		echo ""
-
-		echo "5. Validar formato de correo electrónico:"
-		read -p '   Ingrese un correo electrónico: ' email
-		if [[ $email =~ ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$ ]]; then
-			echo '   ✅ Correo electrónico válido.'
-		else
-			echo '   ❌ Correo electrónico inválido.'
-		fi
-		echo ""
+    5) opt_mike
 		;;
-	6)
-		echo -e "\n2.2 Comando: Built-in Function - Estudiante: Jefferson Palma"
-		echo -e "\nDescripción:"
-		echo "Las funciones built-in son comandos integrados en Bash que permiten automatizar tareas sin llamar procesos externos."
-
-		read -p $'\nPresiona Enter para continuar con la demostración paso a paso...'
-
-		echo -e "\n📌 Paso 1: Definir una función saludo personalizada"
-		read -p "Ingrese su nombre: " nombre
-		saludo() {
-			echo "Hola $1, bienvenido al mundo Bash!"
-		}
-		saludo "$nombre"
-
-		read -p $'\nPresiona Enter para declarar una variable de tipo entero...'
-		read -p "¿Cuál es tu edad? " edad_usuario
-		declare -i edad=$edad_usuario
-		echo "Has declarado la edad como entero. Edad = $edad"
-
-		read -p $'\nPresiona Enter para declarar una constante...'
-		declare -r VERSION="v1.0"
-		echo "Se ha declarado una constante: VERSION = $VERSION"
-
-		read -p $'\n¿Quieres ver el tipo de la función saludo con el comando type? [s/n]: ' confirm_type
-		if [[ "$confirm_type" =~ ^[sS]$ ]]; then
-			type saludo
-		fi
-		read -p $'\n¿Te gustaria ver tambien el de la funcion de busqueda de texto (Opcion 1)? [s/n]: ' confirm_type
-		if [[ "$confirm_type" =~ ^[sS]$ ]]; then
-			type menu_interactivo
-		fi
-
-		read -p $'\nPresiona Enter para mostrar la información del sistema con uname...'
-		uname -a
-
-		read -p $'\n¿Deseas ejecutar un comando con eval (ls -l)? [s/n]: ' confirm_eval
-		if [[ "$confirm_eval" =~ ^[sS]$ ]]; then
-			comando="ls -l"
-			eval $comando
-		else
-			echo "⏭️ Saltando eval..."
-		fi
-
-		read -p $'\nAhora vamos a ordenar frutas. Presiona Enter para continuar...'
-		echo -e "manzana\npera\nbanana" > frutas.txt
-		sort frutas.txt
-
-		read -p $'\n¿Quieres contar las líneas del archivo frutas.txt? [s/n]: ' confirm_wc
-		if [[ "$confirm_wc" =~ ^[sS]$ ]]; then
-			wc -l frutas.txt
-		else
-			echo "⏭️ Saltando wc..."
-		fi
-
-		echo -e "\n7. Comentamos el uso de exec para evitar reemplazar el proceso del menu:"
-		echo "# exec ls -l"
-		echo "⚠️ El comando 'exec' reemplaza el script actual por otro proceso."
-		echo "   Si ejecutáramos: exec ls -l"
-		echo "   Entonces el menú dejaría de funcionar y solo verías el resultado de ls -l."
-
-		read -p $'\n¿Quieres eliminar el archivo frutas.txt ahora? [s/n]: ' confirm_rm
-		if [[ "$confirm_rm" =~ ^[sS]$ ]]; then
-			rm frutas.txt
-			echo "🧹 Archivo eliminado."
-		else
-			echo "📁 Archivo conservado como frutas.txt"
-		fi
+	6) opt_jefferson
 		;;
     0) echo "Saliendo..." ;;
     *) echo "Opcion no valida" ;;
